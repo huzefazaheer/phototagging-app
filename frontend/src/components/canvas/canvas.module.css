@@ -7,3 +7,12 @@
   margin-top: 10px;
   margin-bottom: auto;
 }
+
+.selector {
+  position: absolute;
+}
+
+.selector img {
+  width: 24px;
+  height: 24px;
+}
