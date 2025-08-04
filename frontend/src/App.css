@@ -3,6 +3,18 @@
   text-align: center;
 }
 
+.buttonholder {
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+}
+
+.exitbutton {
+  background-color: rgb(107, 63, 63);
+  color: white;
+}
+
 .logo {
   height: 6em;
   padding: 1.5em;
