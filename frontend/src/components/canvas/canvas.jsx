@@ -26,12 +26,16 @@ export default function Canvas() {
         onContextMenu={(e) => e.preventDefault()}
         ref={divRef}
       ></div>
-      <Selector pos={selectedCoords} showSelector={showSelector} />
+      <Selector
+        pos={selectedCoords}
+        showSelector={showSelector}
+        setShowSelector={setShowSelector}
+      />
     </>
   )
 }
 
-function Selector({ pos, showSelector }) {
+function Selector({ pos, showSelector, setShowSelector }) {
   return (
     <div
       id="selector"
@@ -41,18 +45,18 @@ function Selector({ pos, showSelector }) {
       style={{ left: pos[0], top: pos[1] }}
     >
       <img src="/selector.svg"></img>
-      <DropdownMenu />
+      <DropdownMenu setShowSelector={setShowSelector} />
     </div>
   )
 }
 
-function DropdownMenu() {
+function DropdownMenu({ setShowSelector }) {
   return (
     <ul onMouseDown={(e) => e.stopPropagation()} className={styles.dropdown}>
       <li>Select Item</li>
       <li>Jim</li>
       <li>Jimbo</li>
-      <li>Close</li>
+      <li onClick={() => setShowSelector(false)}>Close</li>
     </ul>
   )
 }
