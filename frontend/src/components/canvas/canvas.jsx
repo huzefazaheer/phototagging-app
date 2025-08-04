@@ -5,7 +5,7 @@ export default function Canvas() {
   const divRef = useRef(null)
   const coordRef = useRef([0, 0])
   const [selectedCoords, setSelectedCoords] = useState([0, 0])
-  const [showSelector, setShowSelector] = useState(true)
+  const [showSelector, setShowSelector] = useState(false)
 
   function getCoords(e) {
     const divSize = divRef.current.getBoundingClientRect()
@@ -20,12 +20,14 @@ export default function Canvas() {
 
   return (
     <>
-      <div className={styles.gameholder}>
+      <div
+        className={styles.gameholder}
+        onContextMenu={(e) => e.preventDefault()}
+      >
         <div
           className={styles.canvas}
           onMouseMove={(e) => getCoords(e)}
           onMouseDown={getClick}
-          onContextMenu={(e) => e.preventDefault()}
           ref={divRef}
         ></div>
         <Selector
@@ -57,8 +59,8 @@ function DropdownMenu({ setShowSelector }) {
   return (
     <ul onMouseDown={(e) => e.stopPropagation()} className={styles.dropdown}>
       <li>Select Item</li>
-      <li>Jim</li>
       <li>Jimbo</li>
+      <li>Dog</li>
       <li onClick={() => setShowSelector(false)}>Close</li>
     </ul>
   )

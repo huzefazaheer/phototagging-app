@@ -46,6 +46,7 @@
 
 .dropdown li:last-of-type {
   background-color: rgb(57, 34, 34);
+  border-bottom: none;
 }
 
 .dropdown li:last-of-type:hover {

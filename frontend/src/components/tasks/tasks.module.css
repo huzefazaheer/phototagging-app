@@ -1,0 +1,25 @@
+.tasks {
+  position: fixed;
+  left: 10px;
+  top: 20px;
+  padding: 2px 10px;
+
+  color: white;
+}
+
+.task {
+  margin-top: 10px;
+  background-color: rgba(255, 255, 255, 0.706);
+  padding: 20px;
+  color: black;
+  border-radius: 20px;
+}
+
+.task img {
+  height: 80px;
+}
+
+.task h4 {
+  margin-bottom: 0;
+  margin-top: 10px;
+}
