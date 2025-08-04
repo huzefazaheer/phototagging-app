@@ -5,11 +5,12 @@ export default function Canvas() {
   const divRef = useRef(null)
   const coordRef = useRef([0, 0])
   const [selectedCoords, setSelectedCoords] = useState([0, 0])
-  const [showSelector, setShowSelector] = useState(false)
+  const [showSelector, setShowSelector] = useState(true)
 
   function getCoords(e) {
     const divSize = divRef.current.getBoundingClientRect()
     coordRef.current = [e.clientX - divSize.left, e.clientY - divSize.top]
+    console.log(coordRef.current)
   }
 
   function getClick() {
@@ -19,18 +20,20 @@ export default function Canvas() {
 
   return (
     <>
-      <div
-        className={styles.canvas}
-        onMouseMove={(e) => getCoords(e)}
-        onMouseDown={getClick}
-        onContextMenu={(e) => e.preventDefault()}
-        ref={divRef}
-      ></div>
-      <Selector
-        pos={selectedCoords}
-        showSelector={showSelector}
-        setShowSelector={setShowSelector}
-      />
+      <div className={styles.gameholder}>
+        <div
+          className={styles.canvas}
+          onMouseMove={(e) => getCoords(e)}
+          onMouseDown={getClick}
+          onContextMenu={(e) => e.preventDefault()}
+          ref={divRef}
+        ></div>
+        <Selector
+          pos={selectedCoords}
+          showSelector={showSelector}
+          setShowSelector={setShowSelector}
+        />
+      </div>
     </>
   )
 }
@@ -42,7 +45,7 @@ function Selector({ pos, showSelector, setShowSelector }) {
       className={`${styles.selector} ${
         showSelector ? '' : styles.selectorhidden
       }`}
-      style={{ left: pos[0], top: pos[1] }}
+      style={{ left: pos[0] - 8, top: pos[1] - 8 }}
     >
       <img src="/selector.svg"></img>
       <DropdownMenu setShowSelector={setShowSelector} />
