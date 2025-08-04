@@ -5,6 +5,7 @@ export default function Canvas() {
   const divRef = useRef(null)
   const coordRef = useRef([0, 0])
   const [selectedCoords, setSelectedCoords] = useState([0, 0])
+  const [showSelector, setShowSelector] = useState(false)
 
   function getCoords(e) {
     const divSize = divRef.current.getBoundingClientRect()
@@ -12,6 +13,7 @@ export default function Canvas() {
   }
 
   function getClick() {
+    if (!showSelector) setShowSelector(true)
     setSelectedCoords(coordRef.current)
   }
 
@@ -23,15 +25,22 @@ export default function Canvas() {
       onContextMenu={(e) => e.preventDefault()}
       ref={divRef}
     >
-      <Selector pos={selectedCoords} />
+      <Selector pos={selectedCoords} showSelector={showSelector} />
     </div>
   )
 }
 
-function Selector({ pos }) {
+function Selector({ pos, showSelector }) {
   return (
-    <div className={styles.selector} style={{ left: pos[0], top: pos[1] }}>
+    <div
+      className={`${styles.selector} ${
+        showSelector ? '' : styles.selectorhidden
+      }`}
+      style={{ left: pos[0], top: pos[1] }}
+    >
       <img src="/selector.svg"></img>
     </div>
   )
 }
+
+function DropdownMenu() {}
