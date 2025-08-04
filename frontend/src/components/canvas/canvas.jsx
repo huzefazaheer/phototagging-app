@@ -4,18 +4,24 @@ import styles from './canvas.module.css'
 export default function Canvas() {
   const divRef = useRef(null)
   const coordRef = useRef([0, 0])
+  const normalizedRef = useRef([0, 0])
   const [selectedCoords, setSelectedCoords] = useState([0, 0])
   const [showSelector, setShowSelector] = useState(false)
 
   function getCoords(e) {
     const divSize = divRef.current.getBoundingClientRect()
     coordRef.current = [e.clientX - divSize.left, e.clientY - divSize.top]
-    console.log(coordRef.current)
   }
 
   function getClick() {
     if (!showSelector) setShowSelector(true)
     setSelectedCoords(coordRef.current)
+    const divSize = divRef.current.getBoundingClientRect()
+    normalizedRef.current = [
+      (2 * coordRef.current[0]) / divSize.width - 1,
+      (2 * coordRef.current[1]) / divSize.height - 1,
+    ]
+    console.log(normalizedRef.current)
   }
 
   return (
