@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from 'react'
 import styles from './canvas.module.css'
 import Selector from '../selector/selector'
+import { api } from '../../main'
 
 export default function Canvas() {
-  const divRef = useRef(null)
+  const canvasRef = useRef(null)
   const coordRef = useRef([0, 0])
   const normalizedRef = useRef([0, 0])
   const normalizedRadiusRef = useRef(0)
@@ -12,28 +13,31 @@ export default function Canvas() {
 
   useEffect(() => {
     async function getSession() {
+      canvasRef.current.style.backgroundImage =
+        'url(http://localhost:8080/beach_party.webp)'
       const res = await fetch(`http://localhost:8080/start`, {
         credentials: 'include',
       })
       console.log(await res.json())
     }
     getSession()
-    const divSize = divRef.current.getBoundingClientRect()
-    normalizedRadiusRef.current = 25 / Math.max(divSize.width, divSize.height)
+    const canvasSize = canvasRef.current.getBoundingClientRect()
+    normalizedRadiusRef.current =
+      25 / Math.max(canvasSize.width, canvasSize.height)
   }, [])
 
   function getCoords(e) {
-    const divSize = divRef.current.getBoundingClientRect()
-    coordRef.current = [e.clientX - divSize.left, e.clientY - divSize.top]
+    const canvasSize = canvasRef.current.getBoundingClientRect()
+    coordRef.current = [e.clientX - canvasSize.left, e.clientY - canvasSize.top]
   }
 
   function getClick() {
     if (!showSelector) setShowSelector(true)
     setSelectedCoords(coordRef.current)
-    const divSize = divRef.current.getBoundingClientRect()
+    const canvasSize = canvasRef.current.getBoundingClientRect()
     normalizedRef.current = [
-      (2 * coordRef.current[0]) / divSize.width - 1,
-      (2 * coordRef.current[1]) / divSize.height - 1,
+      (2 * coordRef.current[0]) / canvasSize.width - 1,
+      (2 * coordRef.current[1]) / canvasSize.height - 1,
     ]
     console.log(normalizedRef.current)
   }
@@ -48,7 +52,7 @@ export default function Canvas() {
           className={styles.canvas}
           onMouseMove={(e) => getCoords(e)}
           onMouseDown={getClick}
-          ref={divRef}
+          ref={canvasRef}
         ></div>
         <Selector
           pos={selectedCoords}

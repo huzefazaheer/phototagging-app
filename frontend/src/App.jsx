@@ -19,7 +19,10 @@ function App() {
 
   const gameScreen = (
     <>
-      <h2>Beach Party</h2>
+      <div className="mapinfo">
+        <p>Map:</p>
+        <h2>Beach Party</h2>
+      </div>
       <Canvas />
       <div className="buttonholder">
         <button className="exitbutton">Exit</button>

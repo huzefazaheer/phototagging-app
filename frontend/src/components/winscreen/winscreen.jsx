@@ -1,9 +1,35 @@
-import { useContext } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { gameHandlerContext } from '../../App'
 import styles from './winscreen.module.css'
 
 export default function WinScreen() {
-  const { timeElapsed } = useContext(gameHandlerContext)
+  const { timeElapsed, gameFinished } = useContext(gameHandlerContext)
+  const [leaderboardData, setLeaderboardData] = useState([])
+  const [loading, setLoading] = useState(false)
+
+  useEffect(() => {
+    async function getLeaderboard() {
+      setLoading(true)
+      const res = await fetch('http://localhost:8080/leaderboard/1')
+      const data = await res.json()
+      setLeaderboardData(data)
+      setLoading(false)
+    }
+    getLeaderboard()
+  }, [gameFinished])
+
+  const leaderboard = !loading ? (
+    leaderboardData.map((data) => {
+      return (
+        <tr>
+          <td>{data.username}</td>
+          <td>{data.timetaken} s</td>
+        </tr>
+      )
+    })
+  ) : (
+    <p>Loading...</p>
+  )
 
   return (
     <>
@@ -25,24 +51,13 @@ export default function WinScreen() {
         </div>
         <div className={styles.right}>
           <h2>Leaderboard</h2>
-          <h4>Map: The Beach</h4>
+          <h4>Map: Beach Party</h4>
           <table>
             <tr>
               <th>Username</th>
               <th>Time </th>
             </tr>
-            <tr>
-              <td>Admin</td>
-              <td>1.02 s</td>
-            </tr>
-            <tr>
-              <td>Huzefa</td>
-              <td>0.02 s</td>
-            </tr>
-            <tr>
-              <td>Ibrahim</td>
-              <td>5.02 s</td>
-            </tr>
+            {leaderboard}
           </table>
         </div>
       </div>

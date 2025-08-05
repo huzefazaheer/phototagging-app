@@ -39,10 +39,27 @@ async function setTask2(id) {
   return rows[0]
 }
 
+async function getLeaderboardForLevel(levelid) {
+  const { rows } = await pool.query(
+    'SELECT username, timetaken FROM leaderboard INNER JOIN game ON game.id = $1',
+    [levelid],
+  )
+  return rows
+}
+
+async function addScoreToLeaderBoard(username, score, levelid) {
+  const { rows } = await pool.query(
+    'INERT INTO leaderboard (username, levelid, timetaken) VALUES($1, $2, $3)',
+    [username, levelid, score],
+  )
+}
+
 module.exports = {
   createSession,
   getSessionById,
   removeSession,
   setTask1,
   setTask2,
+  getLeaderboardForLevel,
+  addScoreToLeaderBoard,
 }

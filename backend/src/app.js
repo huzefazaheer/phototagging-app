@@ -1,24 +1,33 @@
 const express = require('express')
 const cookieParser = require('cookie-parser')
 const cors = require('cors')
-const { default: gamesession } = require('./game')
+const path = require('path')
 const {
   createSession,
   removeSession,
   getSessionById,
   setTask1,
   setTask2,
+  getLeaderboardForLevel,
 } = require('./models/db')
-const { error } = require('console')
+
 const app = express()
+
+const publicPath = path.join(__dirname, '/public')
 
 app.use(cors({ credentials: true, origin: true }))
 app.use(cookieParser())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
+app.use(express.static(publicPath))
 
-const obj1 = [0.3971901028321363, 0.3466584963862458]
-const obj2 = [-0.18973216137179072, -0.0955278755614768]
+const obj1 = [0.2396270788847732, -0.16587570746225078]
+const obj2 = [0.5449054377827889, -0.10557756583301592]
+
+app.get('/leaderboard/:id', async (req, res) => {
+  const data = await getLeaderboardForLevel(req.params.id)
+  res.json(data)
+})
 
 app.get('/start', async (req, res) => {
   let session
@@ -48,6 +57,7 @@ app.get('/tag/:id', async (req, res) => {
         if (dist <= normalized_radius) {
           setTask1(session.id)
           res.json({ status: 'hit target 1' })
+          return
         }
       }
       if (req.params.id == 2) {
@@ -57,6 +67,7 @@ app.get('/tag/:id', async (req, res) => {
         if (dist <= normalized_radius) {
           setTask2(session.id)
           res.json({ status: 'hit target 2' })
+          return
         }
       }
     }
