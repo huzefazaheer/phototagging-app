@@ -12,12 +12,12 @@ const {
 const { error } = require('console')
 const app = express()
 
-app.use(cors())
+app.use(cors({ credentials: true, origin: true }))
 app.use(cookieParser())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
-const obj1 = [-0.19367123697047484, -0.10222766907583614]
+const obj1 = [0.3971901028321363, 0.3466584963862458]
 const obj2 = [-0.18973216137179072, -0.0955278755614768]
 
 app.get('/start', async (req, res) => {
@@ -28,6 +28,7 @@ app.get('/start', async (req, res) => {
     session = await createSession()
     res.cookie('gamesession', session.id, {
       maxAge: 900000,
+      httpOnly: true,
     })
   }
 
@@ -37,9 +38,8 @@ app.get('/start', async (req, res) => {
 app.get('/tag/:id', async (req, res) => {
   if (req.cookies?.gamesession) {
     const session = await getSessionById(req.cookies.gamesession)
-
-    const coords = req?.body?.coords ? JSON.parse(req.body.coords) : undefined
-    const normalized_radius = req?.body?.normalized_radius
+    const coords = req?.query?.coords ? JSON.parse(req.query.coords) : undefined
+    const normalized_radius = req?.query?.normalized_radius
     if (coords && normalized_radius) {
       if (req.params.id == 1) {
         const dist = Math.sqrt(
@@ -61,7 +61,7 @@ app.get('/tag/:id', async (req, res) => {
       }
     }
     res.json({ session })
-  } else req.json({ error: 'Session expired' })
+  } else res.json({ error: 'Session expired' })
 })
 
 app.get('/end', async (req, res) => {
@@ -73,7 +73,7 @@ app.get('/end', async (req, res) => {
       res.clearCookie('gamesession')
       res.json({ session, time })
     }
-  } else req.json({ error: 'Session expired' })
+  } else res.json({ error: 'Session expired' })
 })
 
 app.listen(8080)
