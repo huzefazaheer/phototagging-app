@@ -4,8 +4,10 @@ import styles from './winscreen.module.css'
 
 export default function WinScreen() {
   const { timeElapsed, gameFinished } = useContext(gameHandlerContext)
+  const [username, setUsername] = useState('')
   const [leaderboardData, setLeaderboardData] = useState([])
   const [loading, setLoading] = useState(false)
+  const [update, setUpdate] = useState(false)
 
   useEffect(() => {
     async function getLeaderboard() {
@@ -16,7 +18,21 @@ export default function WinScreen() {
       setLoading(false)
     }
     getLeaderboard()
-  }, [gameFinished])
+  }, [update])
+
+  async function postLeaderboardData() {
+    setLoading(true)
+    const res = await fetch('http://localhost:8080/leaderboard/1', {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+
+      body: JSON.stringify({ username }),
+    })
+    setLoading(false)
+  }
 
   const leaderboard = !loading ? (
     leaderboardData.map((data) => {
@@ -40,13 +56,30 @@ export default function WinScreen() {
           <h3 className={styles.timetaken}>
             Time taken: {timeElapsed.current} seconds
           </h3>
-          <form action="/leaderboard">
+          <form>
             <div className={styles.input}>
               {' '}
               <label htmlFor="username">Enter display name</label>
-              <input type="text" id="username" name="username" />
+              <input
+                type="text"
+                id="username"
+                name="username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+              />
             </div>
-            <button type="submit">Join Leaderboard</button>
+            <button
+              type="submit"
+              onClick={(e) => {
+                e.preventDefault()
+                postLeaderboardData()
+                if (!loading) {
+                  setUpdate((update) => !update)
+                }
+              }}
+            >
+              Join Leaderboard
+            </button>
           </form>
         </div>
         <div className={styles.right}>
@@ -62,7 +95,7 @@ export default function WinScreen() {
         </div>
       </div>
       <div className={styles.buttonholder}>
-        <button>Play Again</button>
+        <a href="/">Play Again</a>
         <button>Choose another map</button>
       </div>
     </>

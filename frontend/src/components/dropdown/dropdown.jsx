@@ -26,7 +26,6 @@ export default function DropdownMenu({
       </li>
       <li
         onClick={async () => {
-          console.log()
           const res = await fetch(
             `http://localhost:8080/tag/2?normalized_radius=${
               normalizedRadiusRef.current

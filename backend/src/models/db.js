@@ -8,6 +8,17 @@ async function createSession() {
   return rows[0]
 }
 
+async function setSessionTimeTaken(timetaken, id) {
+  try {
+    await pool.query('UPDATE sessions SET timetaken = $1 WHERE id = $2;', [
+      timetaken,
+      id,
+    ])
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 async function getSessionById(id) {
   const { rows } = await pool.query('SELECT * FROM sessions WHERE id = ($1)', [
     id,
@@ -49,7 +60,7 @@ async function getLeaderboardForLevel(levelid) {
 
 async function addScoreToLeaderBoard(username, score, levelid) {
   const { rows } = await pool.query(
-    'INERT INTO leaderboard (username, levelid, timetaken) VALUES($1, $2, $3)',
+    'INSERT INTO leaderboard (username, levelid, timetaken) VALUES($1, $2, $3)',
     [username, levelid, score],
   )
 }
@@ -62,4 +73,5 @@ module.exports = {
   setTask2,
   getLeaderboardForLevel,
   addScoreToLeaderBoard,
+  setSessionTimeTaken,
 }

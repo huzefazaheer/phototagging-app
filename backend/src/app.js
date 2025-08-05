@@ -9,6 +9,8 @@ const {
   setTask1,
   setTask2,
   getLeaderboardForLevel,
+  setSessionTimeTaken,
+  addScoreToLeaderBoard,
 } = require('./models/db')
 
 const app = express()
@@ -29,17 +31,29 @@ app.get('/leaderboard/:id', async (req, res) => {
   res.json(data)
 })
 
+app.post('/leaderboard/:id', async (req, res) => {
+  if (req.cookies?.gamesession) {
+    const session = await getSessionById(req.cookies.gamesession)
+    const username = req.body.username
+    if (session && username) {
+      await addScoreToLeaderBoard(username, session.timetaken)
+      await removeSession(req.cookies.gamesession)
+    }
+    res.clearCookie('gamesession')
+  }
+})
+
 app.get('/start', async (req, res) => {
   let session
   if (req.cookies?.gamesession) {
-    session = await getSessionById(req.cookies.gamesession)
-  } else {
-    session = await createSession()
-    res.cookie('gamesession', session.id, {
-      maxAge: 900000,
-      httpOnly: true,
-    })
+    await removeSession(req.cookies.gamesession)
+    res.clearCookie('gamesession')
   }
+  session = await createSession()
+  res.cookie('gamesession', session.id, {
+    maxAge: 900000,
+    httpOnly: true,
+  })
 
   res.json(session)
 })
@@ -79,9 +93,8 @@ app.get('/end', async (req, res) => {
   if (req.cookies?.gamesession) {
     const session = await getSessionById(req.cookies.gamesession)
     if (session.obj1 && session.obj2) {
-      const session = await removeSession(req.cookies.gamesession)
       const time = (new Date() - new Date(session.starttime)) / 1000
-      res.clearCookie('gamesession')
+      await setSessionTimeTaken(time, req.cookies.gamesession)
       res.json({ session, time })
     }
   } else res.json({ error: 'Session expired' })
