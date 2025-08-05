@@ -1,10 +1,14 @@
+import { useContext } from 'react'
 import styles from './dropdown.module.css'
+import { gameHandlerContext } from '../../App'
 
 export default function DropdownMenu({
   setShowSelector,
   normalizedRef,
   normalizedRadiusRef,
 }) {
+  const { toggleToast } = useContext(gameHandlerContext)
+
   return (
     <ul onMouseDown={(e) => e.stopPropagation()} className={styles.dropdown}>
       <li>Select Item</li>
@@ -18,7 +22,8 @@ export default function DropdownMenu({
               credentials: 'include',
             },
           )
-          console.log(await res.json())
+          const data = await res.json()
+          if (data?.status) toggleToast()
           setShowSelector(false)
         }}
       >
@@ -34,7 +39,8 @@ export default function DropdownMenu({
               credentials: 'include',
             },
           )
-          console.log(await res.json())
+          const data = await res.json()
+          if (data?.status) toggleToast()
           setShowSelector(false)
         }}
       >

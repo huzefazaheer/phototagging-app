@@ -1,9 +1,10 @@
-import { createContext, useRef, useState } from 'react'
+import { createContext, useEffect, useRef, useState } from 'react'
 import './App.css'
 import Canvas from './components/canvas/canvas'
 import Tasks from './components/tasks/tasks'
 import WinScreen from './components/winscreen/winscreen'
 import useGameState from './utls/gamestate'
+import Toast from './components/toast/toast'
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const gameHandlerContext = createContext({
@@ -12,6 +13,7 @@ export const gameHandlerContext = createContext({
   timeElapsed: null,
   targets: null,
   setTargets: null,
+  toggleToast: null,
 })
 
 function App() {
@@ -43,6 +45,7 @@ function App() {
         </button>
       </div>
       <Tasks />
+      <Toast showToast={gameHandler.showStausToast} />
     </>
   )
   return (
