@@ -92,7 +92,6 @@ function DropdownMenu({ setShowSelector, normalizedRef, normalizedRadiusRef }) {
       <li>Select Item</li>
       <li
         onClick={async () => {
-          console.log()
           const res = await fetch(
             `http://localhost:8080/tag/1?normalized_radius=${
               normalizedRadiusRef.current
@@ -101,11 +100,11 @@ function DropdownMenu({ setShowSelector, normalizedRef, normalizedRadiusRef }) {
               credentials: 'include',
             },
           )
-          console.log(res)
           console.log(await res.json())
+          setShowSelector(false)
         }}
       >
-        Jimbo
+        Waldo
       </li>
       <li
         onClick={async () => {
@@ -118,11 +117,11 @@ function DropdownMenu({ setShowSelector, normalizedRef, normalizedRadiusRef }) {
               credentials: 'include',
             },
           )
-          console.log(res)
           console.log(await res.json())
+          setShowSelector(false)
         }}
       >
-        Dog
+        Wenda
       </li>
       <li onClick={() => setShowSelector(false)}>Close</li>
     </ul>
