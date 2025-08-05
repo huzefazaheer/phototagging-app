@@ -1,13 +1,25 @@
-import { useRef, useState } from 'react'
+import { createContext, useRef, useState } from 'react'
 import './App.css'
 import Canvas from './components/canvas/canvas'
 import Tasks from './components/tasks/tasks'
+import WinScreen from './components/winscreen/winscreen'
+import useGameState from './utls/gamestate'
+
+// eslint-disable-next-line react-refresh/only-export-components
+export const gameHandlerContext = createContext({
+  gameFinished: null,
+  setGameFinished: null,
+  timeElapsed: null,
+  targets: null,
+  setTargets: null,
+})
 
 function App() {
-  const [gameEnded, setgameEnded] = useState(false)
-  const timeRef = useRef(0)
+  const gameHandler = useGameState()
+
   const gameScreen = (
     <>
+      <h2>Beach Party</h2>
       <Canvas />
       <div className="buttonholder">
         <button className="exitbutton">Exit</button>
@@ -19,8 +31,8 @@ function App() {
             })
             const data = await res.json()
             if (data?.time) {
-              timeRef.current = data.time
-              setgameEnded(true)
+              gameHandler.timeElapsed.current = data.time
+              gameHandler.setGameFinished(true)
             }
           }}
         >
@@ -30,19 +42,13 @@ function App() {
       <Tasks />
     </>
   )
-  const winScreen = (
+  return (
     <>
-      <h3>Game end, you won. </h3>
-      <p>Time taken: {timeRef.current} seconds</p>
-      <form action="/leaderboard">
-        <h3>Leaderboard</h3>
-        <label htmlFor="username">Enter your name</label>
-        <input type="text" id="username" name="username" />
-        <button type="submit">Join Leaderboard</button>
-      </form>
+      <gameHandlerContext.Provider value={gameHandler}>
+        {gameHandler.gameFinished ? <WinScreen /> : gameScreen}
+      </gameHandlerContext.Provider>
     </>
   )
-  return <>{gameEnded ? winScreen : gameScreen}</>
 }
 
 export default App

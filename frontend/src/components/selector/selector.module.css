@@ -1,0 +1,12 @@
+.selector {
+  position: absolute;
+}
+
+.selector img {
+  width: 14px;
+  height: 14px;
+}
+
+.selectorhidden {
+  display: none;
+}

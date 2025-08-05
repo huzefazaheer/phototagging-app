@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import styles from './canvas.module.css'
+import Selector from '../selector/selector'
 
 export default function Canvas() {
   const divRef = useRef(null)
@@ -58,72 +59,5 @@ export default function Canvas() {
         />
       </div>
     </>
-  )
-}
-
-function Selector({
-  pos,
-  showSelector,
-  setShowSelector,
-  normalizedRef,
-  normalizedRadiusRef,
-}) {
-  return (
-    <div
-      id="selector"
-      className={`${styles.selector} ${
-        showSelector ? '' : styles.selectorhidden
-      }`}
-      style={{ left: pos[0] - 8, top: pos[1] - 8 }}
-    >
-      <img src="/selector.svg"></img>
-      <DropdownMenu
-        setShowSelector={setShowSelector}
-        normalizedRef={normalizedRef}
-        normalizedRadiusRef={normalizedRadiusRef}
-      />
-    </div>
-  )
-}
-
-function DropdownMenu({ setShowSelector, normalizedRef, normalizedRadiusRef }) {
-  return (
-    <ul onMouseDown={(e) => e.stopPropagation()} className={styles.dropdown}>
-      <li>Select Item</li>
-      <li
-        onClick={async () => {
-          const res = await fetch(
-            `http://localhost:8080/tag/1?normalized_radius=${
-              normalizedRadiusRef.current
-            }&coords=${JSON.stringify(normalizedRef.current)}`,
-            {
-              credentials: 'include',
-            },
-          )
-          console.log(await res.json())
-          setShowSelector(false)
-        }}
-      >
-        Waldo
-      </li>
-      <li
-        onClick={async () => {
-          console.log()
-          const res = await fetch(
-            `http://localhost:8080/tag/2?normalized_radius=${
-              normalizedRadiusRef.current
-            }&coords=${JSON.stringify(normalizedRef.current)}`,
-            {
-              credentials: 'include',
-            },
-          )
-          console.log(await res.json())
-          setShowSelector(false)
-        }}
-      >
-        Wenda
-      </li>
-      <li onClick={() => setShowSelector(false)}>Close</li>
-    </ul>
   )
 }
