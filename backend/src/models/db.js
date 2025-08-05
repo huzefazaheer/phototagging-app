@@ -23,4 +23,26 @@ async function removeSession(id) {
   return rows[0]
 }
 
-module.exports = { createSession, getSessionById, removeSession }
+async function setTask1(id) {
+  const { rows } = await pool.query(
+    'UPDATE sessions SET obj1 = TRUE WHERE id = $1 RETURNING *',
+    [id],
+  )
+  return rows[0]
+}
+
+async function setTask2(id) {
+  const { rows } = await pool.query(
+    'UPDATE sessions SET obj2 = TRUE WHERE id = $1 RETURNING *',
+    [id],
+  )
+  return rows[0]
+}
+
+module.exports = {
+  createSession,
+  getSessionById,
+  removeSession,
+  setTask1,
+  setTask2,
+}
