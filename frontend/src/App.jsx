@@ -1,4 +1,4 @@
-import { createContext, useEffect, useRef, useState } from 'react'
+import { createContext, useEffect } from 'react'
 import './App.css'
 import Canvas from './components/canvas/canvas'
 import Tasks from './components/tasks/tasks'
@@ -13,11 +13,24 @@ export const gameHandlerContext = createContext({
   timeElapsed: null,
   targets: null,
   setTargets: null,
-  toggleToast: null,
+  addToast: null,
+  toasts: null,
+  setToasts: null,
 })
 
 function App() {
   const gameHandler = useGameState()
+
+  const toasts = gameHandler.toasts.map((toast) => {
+    return (
+      <Toast
+        id={toast.id}
+        message={toast.message}
+        status={toast.status}
+        setToasts={gameHandler.setToasts}
+      />
+    )
+  })
 
   const gameScreen = (
     <>
@@ -45,7 +58,7 @@ function App() {
         </button>
       </div>
       <Tasks />
-      <Toast showToast={gameHandler.showStausToast} />
+      <div className="toastholder">{toasts}</div>
     </>
   )
   return (

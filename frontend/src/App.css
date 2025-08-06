@@ -64,3 +64,9 @@ p {
   margin-top: 5px;
   margin-bottom: 0;
 }
+
+.toastholder {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+}

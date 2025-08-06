@@ -1,18 +1,21 @@
 import { useEffect, useRef, useState } from 'react'
+import Toast from '../components/toast/toast'
 
 export default function useGameState() {
   const [gameFinished, setGameFinished] = useState(false)
   const timeElapsed = useRef(0)
   const [targets, setTargets] = useState([])
-  const [showStausToast, setShowStatusToast] = useState(false)
+  const [toasts, setToasts] = useState([])
 
-  useEffect(() => {}, [targets])
-
-  function toggleToast() {
-    setShowStatusToast(true)
-    setTimeout(() => {
-      setShowStatusToast(false)
-    }, 1000)
+  function addToast(status, message) {
+    setToasts((prevToasts) => [
+      ...prevToasts,
+      {
+        status: status,
+        message: message,
+        id: crypto.randomUUID(),
+      },
+    ])
   }
 
   return {
@@ -21,7 +24,8 @@ export default function useGameState() {
     timeElapsed,
     targets,
     setTargets,
-    toggleToast,
-    showStausToast,
+    addToast,
+    toasts,
+    setToasts,
   }
 }
