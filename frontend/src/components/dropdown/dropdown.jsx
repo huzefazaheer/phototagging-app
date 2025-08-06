@@ -7,7 +7,7 @@ export default function DropdownMenu({
   normalizedRef,
   normalizedRadiusRef,
 }) {
-  const { addToast } = useContext(gameHandlerContext)
+  const { addToast, setTargets, targets } = useContext(gameHandlerContext)
 
   return (
     <ul onMouseDown={(e) => e.stopPropagation()} className={styles.dropdown}>
@@ -23,8 +23,10 @@ export default function DropdownMenu({
             },
           )
           const data = await res.json()
-          if (data?.status) addToast('success', 'Found target 1')
-          else addToast('error', 'That is incorrect')
+          if (data?.status) {
+            addToast('success', 'Found target 1')
+            setTargets({ ...targets, 1: true })
+          } else addToast('error', 'That is incorrect')
           setShowSelector(false)
         }}
       >
@@ -41,8 +43,10 @@ export default function DropdownMenu({
             },
           )
           const data = await res.json()
-          if (data?.status) addToast('success', 'Found target 2')
-          else addToast('error', 'That is incorrect')
+          if (data?.status) {
+            addToast('success', 'Found target 2')
+            setTargets({ ...targets, 2: true })
+          } else addToast('error', 'That is incorrect')
           setShowSelector(false)
         }}
       >
