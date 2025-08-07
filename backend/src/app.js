@@ -17,7 +17,7 @@ const app = express()
 
 const publicPath = path.join(__dirname, '/public')
 
-app.use(cors({ credentials: true, origin: true }))
+app.use(cors({ credentials: true, origin: true, optionsSuccessStatus: 200 }))
 app.use(cookieParser())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
