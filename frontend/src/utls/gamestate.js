@@ -8,6 +8,7 @@ export default function useGameState() {
   const [game, setGame] = useState(null)
   const [targets, setTargets] = useState({ 1: false, 2: false })
   const [toasts, setToasts] = useState([])
+  const [objectives, setObjectives] = useState({})
 
   function addToast(status, message) {
     setToasts((prevToasts) => [
@@ -33,5 +34,7 @@ export default function useGameState() {
     setLevelSelected,
     setGame,
     game,
+    objectives,
+    setObjectives,
   }
 }

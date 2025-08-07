@@ -21,6 +21,8 @@ export const gameHandlerContext = createContext({
   setLevelSelected: null,
   setGame: null,
   game: null,
+  objectives: null,
+  setObjectives: null,
 })
 
 function App() {

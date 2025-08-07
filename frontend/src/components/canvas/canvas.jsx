@@ -20,7 +20,8 @@ export default function Canvas() {
       const res = await fetch(`http://localhost:8080/start/${game.game}`, {
         credentials: 'include',
       })
-      console.log(await res.json())
+      const data = await res.json()
+      game.setObjectives(data.game.objectives)
     }
     getSession()
     const canvasSize = canvasRef.current.getBoundingClientRect()
