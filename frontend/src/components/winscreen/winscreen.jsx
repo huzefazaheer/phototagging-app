@@ -23,7 +23,7 @@ export default function WinScreen() {
 
   async function postLeaderboardData() {
     setLoading(true)
-    const res = await fetch(api + 'leaderboard/1', {
+    const res = await fetch(api + '/leaderboard/1', {
       method: 'POST',
       credentials: 'include',
       headers: {
