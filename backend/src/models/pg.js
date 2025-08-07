@@ -1,7 +1,8 @@
+require('dotenv').config()
 const { Pool } = require('pg')
 
 const pool = new Pool({
-  connectionString: 'postgres://huzefa:123@localhost:5432/phototagging',
+  connectionString: process.env.DB,
 })
 
 module.exports = pool
