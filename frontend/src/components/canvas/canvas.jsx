@@ -15,9 +15,8 @@ export default function Canvas() {
 
   useEffect(() => {
     async function getSession() {
-      canvasRef.current.style.backgroundImage =
-        'url(http://localhost:8080/beach_party.webp)'
-      const res = await fetch(`http://localhost:8080/start/${game.game}`, {
+      canvasRef.current.style.backgroundImage = `url(${api}/beach_party.webp)`
+      const res = await fetch(`${api}/start/${game.game}`, {
         credentials: 'include',
       })
       const data = await res.json()

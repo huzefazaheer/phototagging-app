@@ -6,6 +6,7 @@ import WinScreen from './components/winscreen/winscreen'
 import useGameState from './utls/gamestate'
 import Toast from './components/toast/toast'
 import GameSelector from './components/gameselectorscreen/gameselector'
+import { api } from './main'
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const gameHandlerContext = createContext({
@@ -51,7 +52,7 @@ function App() {
         <button
           className="helpbutton"
           onClick={async () => {
-            const res = await fetch(`http://localhost:8080/end`, {
+            const res = await fetch(api + `/end`, {
               credentials: 'include',
             })
             const data = await res.json()

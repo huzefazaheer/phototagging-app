@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from 'react'
 import { gameHandlerContext } from '../../App'
 import styles from './winscreen.module.css'
+import { api } from '../../main'
 
 export default function WinScreen() {
   const { timeElapsed, gameFinished } = useContext(gameHandlerContext)
@@ -12,7 +13,7 @@ export default function WinScreen() {
   useEffect(() => {
     async function getLeaderboard() {
       setLoading(true)
-      const res = await fetch('http://localhost:8080/leaderboard/1')
+      const res = await fetch(api + '/leaderboard/1')
       const data = await res.json()
       setLeaderboardData(data)
       setLoading(false)
@@ -22,7 +23,7 @@ export default function WinScreen() {
 
   async function postLeaderboardData() {
     setLoading(true)
-    const res = await fetch('http://localhost:8080/leaderboard/1', {
+    const res = await fetch(api + 'leaderboard/1', {
       method: 'POST',
       credentials: 'include',
       headers: {

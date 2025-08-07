@@ -13,7 +13,7 @@ export default function GameSelector() {
   useEffect(() => {
     async function getGames() {
       setLoading(true)
-      const res = await fetch('http://localhost:8080/games')
+      const res = await fetch(api + '/games')
       const data = await res.json()
       setGamesData(data)
       setLoading(false)
