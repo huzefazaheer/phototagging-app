@@ -96,7 +96,6 @@ export default function WinScreen() {
       </div>
       <div className={styles.buttonholder}>
         <a href="/">Play Again</a>
-        <button>Choose another map</button>
       </div>
     </>
   )

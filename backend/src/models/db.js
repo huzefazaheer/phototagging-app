@@ -60,6 +60,11 @@ async function addScoreToLeaderBoard(username, score, levelid) {
   )
 }
 
+async function getAllGames() {
+  const { rows } = await pool.query('SELECT * FROM game')
+  return rows
+}
+
 module.exports = {
   createSession,
   getSessionById,
@@ -68,4 +73,5 @@ module.exports = {
   getLeaderboardForLevel,
   addScoreToLeaderBoard,
   setSessionTimeTaken,
+  getAllGames,
 }

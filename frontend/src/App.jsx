@@ -5,6 +5,7 @@ import Tasks from './components/tasks/tasks'
 import WinScreen from './components/winscreen/winscreen'
 import useGameState from './utls/gamestate'
 import Toast from './components/toast/toast'
+import GameSelector from './components/gameselectorscreen/gameselector'
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const gameHandlerContext = createContext({
@@ -16,6 +17,10 @@ export const gameHandlerContext = createContext({
   addToast: null,
   toasts: null,
   setToasts: null,
+  levelSelected: null,
+  setLevelSelected: null,
+  setGame: null,
+  game: null,
 })
 
 function App() {
@@ -64,7 +69,13 @@ function App() {
   return (
     <>
       <gameHandlerContext.Provider value={gameHandler}>
-        {gameHandler.gameFinished ? <WinScreen /> : gameScreen}
+        {!gameHandler.levelSelected ? (
+          <GameSelector />
+        ) : gameHandler.gameFinished ? (
+          <WinScreen />
+        ) : (
+          gameScreen
+        )}
       </gameHandlerContext.Provider>
     </>
   )

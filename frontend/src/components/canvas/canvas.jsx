@@ -1,7 +1,8 @@
-import { useEffect, useRef, useState } from 'react'
+import { useContext, useEffect, useRef, useState } from 'react'
 import styles from './canvas.module.css'
 import Selector from '../selector/selector'
 import { api } from '../../main'
+import { gameHandlerContext } from '../../App'
 
 export default function Canvas() {
   const canvasRef = useRef(null)
@@ -10,12 +11,13 @@ export default function Canvas() {
   const normalizedRadiusRef = useRef(0)
   const [selectedCoords, setSelectedCoords] = useState([0, 0])
   const [showSelector, setShowSelector] = useState(false)
+  const game = useContext(gameHandlerContext)
 
   useEffect(() => {
     async function getSession() {
       canvasRef.current.style.backgroundImage =
         'url(http://localhost:8080/beach_party.webp)'
-      const res = await fetch(`http://localhost:8080/start`, {
+      const res = await fetch(`http://localhost:8080/start/${game.game}`, {
         credentials: 'include',
       })
       console.log(await res.json())

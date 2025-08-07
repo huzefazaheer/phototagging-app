@@ -10,6 +10,7 @@ const {
   setSessionTimeTaken,
   addScoreToLeaderBoard,
   setTask,
+  getAllGames,
 } = require('./models/db')
 
 const app = express()
@@ -24,6 +25,7 @@ app.use(express.static(publicPath))
 
 const game1 = {
   name: 'Beach Party',
+  gameid: 1,
   objective_count: 2,
   objectives: {
     1: {
@@ -40,6 +42,11 @@ const game1 = {
 }
 
 const games = [game1]
+
+app.get('/games', async (req, res) => {
+  const data = await getAllGames()
+  res.json(data)
+})
 
 app.get('/leaderboard/:id', async (req, res) => {
   const data = await getLeaderboardForLevel(req.params.id)
@@ -104,16 +111,15 @@ app.get('/tag/:id', async (req, res) => {
 app.get('/end', async (req, res) => {
   if (req.cookies?.gamesession) {
     const session = await getSessionById(req.cookies.gamesession)
-    Object.keys(session.game.objectives).forEach((key) => {
-      if (!session.game.objectives[key].done) {
-        res.json({ error: 'Game is not completed' })
-        return
-      }
-    })
+    const isGameCompleted = Object.values(session.game.objectives).every(
+      (objective) => objective.done,
+    )
 
-    const time = (new Date() - new Date(session.starttime)) / 1000
-    await setSessionTimeTaken(time, req.cookies.gamesession)
-    res.json({ session, time })
+    if (isGameCompleted) {
+      const time = (new Date() - new Date(session.starttime)) / 1000
+      await setSessionTimeTaken(time, req.cookies.gamesession)
+      res.json({ session, time })
+    } else res.json({ error: 'Game is not finised' })
   } else res.json({ error: 'Session expired' })
 })
 
